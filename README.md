@@ -5,7 +5,7 @@
 ## ⛔ Important Experimental Rules (Read First)
 
 These rules govern what is and is not a valid paper result. Violating them will
-produce misleading drift claims that reviewers will reject.
+produce misleading drift claims.
 
 | Rule | Requirement |
 |------|-------------|
@@ -167,7 +167,7 @@ python scripts/audit_prediction_files.py \
 
 ---
 
-### Step 0b — Regenerate unsafe_probability (required before paper submission)
+### Step 0b — Regenerate unsafe_probability for full reproduction
 
 The original evaluator does not save token-level probabilities. Run `evaluator_v2.py` on the HPC cluster to regenerate predictions with real `unsafe_probability` and `safe_probability`:
 
