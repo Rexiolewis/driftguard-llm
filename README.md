@@ -15,10 +15,40 @@ produce misleading drift claims that reviewers will reject.
 | **Constant 0.5 confidence = invalid** | Any prediction file where `pred_confidence` or `unsafe_confidence` is constant 0.5 is not valid for confidence-based drift analysis. The pipeline will STOP if this is detected. |
 | **E3 (3 rows) must be excluded** | `e3_qlora_mm_predictions.jsonl` has only 3 rows and is unusable for any multi-window drift experiment. It must not appear in any drift result table. |
 | **Phase 2 (208 rows) is exploratory only** | Phase 2 files have 208 rows — too few for W=200 multi-window drift. Reduce window size to ≤ 69 and explicitly label results as "exploratory small-sample analysis" in the paper. |
-| **Require real token probabilities for paper submission** | Before submitting the revised paper, E1 must be rerun with `evaluator_v2.py` to generate real `unsafe_probability` and `safe_probability`. Files with constant confidence cannot be used. |
+| **Require real token probabilities for paper submission** | For full reproduction, E1 predictions must be regenerated using `evaluator_v2.py` because the full prediction JSONL file is not committed to this repository. The final results in `results/drift_v2_e1_final/` were generated from E1 QLoRA predictions with real `unsafe_probability` and `safe_probability` values. |
 
 **Scripts enforce these rules automatically.** If validation fails, the script
 stops with a clear STOP message and tells you exactly what to do next.
+
+---
+
+## Final paper-ready result
+
+The final paper-ready result is stored in:
+
+```
+results/drift_v2_e1_final/
+```
+
+**Primary configuration:**
+
+| Parameter | Value |
+|-----------|-------|
+| `detector_rule` | `Ensemble_majority` |
+| `reference_mode` | `fixed_first` |
+| `window_size` | 200 |
+| `step_size` | 200 |
+| `bins` | 20 |
+| `binning` | `equal_width` |
+
+**Primary result:**
+
+| Metric | Value |
+|--------|-------|
+| i.i.d. control | no drift detected |
+| controlled drift streams detected | 7/7 |
+| pre-drift false alarms | 0 |
+| mean detection delay | 0.14 windows |
 
 ---
 
@@ -88,11 +118,14 @@ drift_v2_project/
 │   ├── run_all_drift_v2.sh              # Shell: run full pipeline locally
 │   └── run_drift_v2.slurm              # HPC: SLURM batch job
 ├── results/
-│   └── drift_v2/
-│       ├── audit/                       # prediction_file_audit.csv / .json
-│       ├── streams/                     # synthetic drift stream JSONL + metadata
-│       ├── tables/                      # sensitivity_analysis.csv, ablation_*.csv
-│       └── reports/                     # per-stream JSON reports
+│   └── drift_v2_e1_final/               # Final paper-ready E1 results
+│       ├── calibrated_thresholds.json   # Bootstrap-calibrated KL/JS/Wass/KS thresholds
+│       └── tables/
+│           ├── paper_primary_results.csv    # Primary config results (paper Table 1)
+│           ├── paper_ablation_summary.csv   # Detector ablation (paper Table 2)
+│           ├── sensitivity_analysis.csv     # Full 12,288-row sensitivity grid
+│           ├── ablation_detector_rules.csv  # Ablation subset (192 rows)
+│           └── stream_detection_summary.csv # Best config per stream
 ├── requirements.txt
 └── README.md
 ```
@@ -122,12 +155,12 @@ Always run the audit first. It will:
 - Report row counts, confidence distributions, label distributions
 - Warn if confidence is constant (invalid for drift analysis)
 - Print a **STOP** message if E1 has all-0.5 confidence
-- Generate `results/drift_v2/audit/prediction_file_audit.csv`
+- Generate `results/drift_v2_e1_final/audit/prediction_file_audit.csv`
 
 ```bash
 python scripts/audit_prediction_files.py \
   --input_dir predictions \
-  --out results/drift_v2/audit
+  --out results/drift_v2_e1_final/audit
 ```
 
 **If the audit prints STOP:** You must rerun inference before proceeding.
@@ -161,12 +194,16 @@ The new `predictions.jsonl` will include:
 
 ```bash
 python scripts/generate_drift_streams.py \
-  --input predictions/e0_zero_shot_predictions.jsonl \
-  --out results/drift_v2/streams \
+  --input predictions/e1_qlora_ft_predictions_v2.jsonl \
+  --out results/drift_v2_e1_final/streams \
+  --target_n 2000 \
+  --drift_fraction 0.5 \
+  --post_unsafe_frac 0.75 \
+  --confidence_shift_delta 0.20 \
   --seed 42
 ```
 
-This creates 8 streams in `results/drift_v2/streams/`:
+This creates 8 streams in `results/drift_v2_e1_final/streams/`:
 
 | Stream | Drift Type |
 |--------|-----------|
@@ -188,10 +225,13 @@ This creates 8 streams in `results/drift_v2/streams/`:
 
 ```bash
 python scripts/calibrate_thresholds.py \
-  --input results/drift_v2/streams/iid_control.jsonl \
-  --out results/drift_v2/calibrated_thresholds.json \
+  --input results/drift_v2_e1_final/streams/iid_control.jsonl \
+  --out results/drift_v2_e1_final/calibrated_thresholds.json \
   --target_fpr 0.05 \
-  --n_bootstrap 500
+  --n_bootstrap 500 \
+  --window_size 200 \
+  --bins 20 \
+  --binning equal_width
 ```
 
 Output `calibrated_thresholds.json` contains statistically grounded thresholds:
@@ -207,9 +247,9 @@ These replace the arbitrary KL=0.05/0.15 thresholds from the original paper.
 
 ```bash
 python scripts/run_drift_experiments_v2.py \
-  --streams_dir results/drift_v2/streams \
-  --thresholds results/drift_v2/calibrated_thresholds.json \
-  --out results/drift_v2 \
+  --streams_dir results/drift_v2_e1_final/streams \
+  --thresholds results/drift_v2_e1_final/calibrated_thresholds.json \
+  --out results/drift_v2_e1_final \
   --window_sizes 50 100 200 500 \
   --bins 10 20 30 50 \
   --step_fractions 1.0 0.5 \
@@ -307,7 +347,7 @@ The original text content cannot be redistributed under the source dataset licen
 
 2. **Phase 2 files (208 rows):** Too small for W=200 non-overlapping drift with multiple windows. Reduce to W=30–50 and mark results as "exploratory" in the paper.
 
-3. **Constant confidence (E0, E1, E2, E4):** All Phase 1 experiments have constant `pred_confidence`. This is an evaluator bug — see Step 0b above.
+3. **Constant confidence (E0, E2, E4):** These Phase 1 files have constant `pred_confidence` (evaluator artefact). **E1 is resolved** — `e1_qlora_ft_predictions_v2.jsonl` contains real token-logit probabilities (3,698 unique `unsafe_confidence` values). Use the v2 file for all paper results.
 
 4. **Row count mismatch:** E0/E1/E2/E4/E5 have 4217 rows; baselines (XLM-R, LG-3) have 4282 rows. Investigate whether 65 records were dropped in pre-processing.
 
