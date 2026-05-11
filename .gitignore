@@ -1,0 +1,72 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+venv/
+.venv*/
+env/
+.env
+*.env
+
+# ── Data — large prediction files (not for public repo) ───────────────────────
+predictions/*.jsonl
+!predictions/README.md
+predictions/archive/
+
+# ── Large result files (keep tables, skip streams & reports) ─────────────────
+results/drift_v2_e1_final/streams/
+results/drift_v2_e1_final/reports/
+results/drift_v2_e1_final/audit/
+# Keep: calibrated_thresholds.json and tables/*.csv
+
+# ── HPC / credentials ────────────────────────────────────────────────────────
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+.ssh/
+scripts/jobs/
+scripts/download_and_finalize_e1.py
+scripts/finalize_e1_after_hpc.sh
+
+# ── Models (too large for GitHub) ────────────────────────────────────────────
+models/
+artifacts/
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+logs/
+*.log
+*.out
+*.err
+
+# ── Jupyter ──────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# ── IDE ──────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.code-workspace
+
+# ── Temporary ────────────────────────────────────────────────────────────────
+tmp/
+archive_superseded/

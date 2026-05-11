@@ -1,0 +1,49 @@
+{
+  "target_fpr": 0.05,
+  "n_bootstrap": 500,
+  "window_size": 200,
+  "bins": 20,
+  "binning": "equal_width",
+  "n_records_used": 2000,
+  "kl_threshold_95": 0.633231,
+  "kl_mean_null": 0.171258,
+  "kl_std_null": 0.194882,
+  "js_threshold_95": 0.039591,
+  "js_mean_null": 0.025221,
+  "js_std_null": 0.007729,
+  "wasserstein_threshold_95": 0.070373,
+  "wasserstein_mean_null": 0.035238,
+  "wasserstein_std_null": 0.018738,
+  "ks_stat_threshold_95": 0.125,
+  "ks_stat_mean_null": 0.08368,
+  "ks_stat_std_null": 0.02346,
+  "ks_alpha": 0.05,
+  "kl_null_percentiles": {
+    "50": 0.102142,
+    "75": 0.140723,
+    "90": 0.442913,
+    "95": 0.633231,
+    "99": 0.901496
+  },
+  "js_null_percentiles": {
+    "50": 0.024424,
+    "75": 0.029988,
+    "90": 0.036009,
+    "95": 0.039591,
+    "99": 0.044972
+  },
+  "wasserstein_null_percentiles": {
+    "50": 0.029511,
+    "75": 0.046623,
+    "90": 0.063798,
+    "95": 0.070373,
+    "99": 0.083565
+  },
+  "ks_null_percentiles": {
+    "50": 0.08,
+    "75": 0.1,
+    "90": 0.115,
+    "95": 0.125,
+    "99": 0.155
+  }
+}

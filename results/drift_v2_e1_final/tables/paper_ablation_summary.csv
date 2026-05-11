@@ -1,0 +1,7 @@
+detector_rule,detected_drift_streams,iid_control_false_alarm,total_false_alarms_before_drift,mean_detection_delay_windows
+KL_only,5/7,No,0,0.0
+KS_only,7/7,Yes,0,0.14
+KL_AND_KS,5/7,No,0,0.0
+JS_only,7/7,No,1,0.14
+Wasserstein_only,7/7,No,1,0.29
+Ensemble_majority,7/7,No,0,0.14

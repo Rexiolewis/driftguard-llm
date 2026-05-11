@@ -1,0 +1,9 @@
+stream_name,drift_detected,first_detection_window,detection_delay,false_alarm_count_before_drift,true_detection_after_drift,max_kl,min_ks_pvalue,max_js,max_wasserstein
+iid_control,False,,,0,False,0.5122,0.006094,0.0308,0.0649
+class_prior_gradual,True,3,1,0,True,0.3158,0.0,0.0757,0.231
+class_prior_sudden,True,4,0,0,True,1.2672,0.0,0.0822,0.2258
+confidence_shift_gradual,True,2,0,0,True,3.5302,0.0,0.1363,0.0978
+confidence_shift_sudden,True,4,0,0,True,5.2365,0.0,0.1738,0.1801
+language_gradual,True,2,0,0,True,0.5557,0.0,0.1323,0.2133
+language_sudden,True,4,0,0,True,12.4463,0.0,0.3326,0.332
+source_sudden,True,4,0,0,True,4.0272,0.0,0.3553,0.3556

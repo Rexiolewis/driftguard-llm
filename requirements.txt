@@ -1,0 +1,30 @@
+# DriftGuard-LLM v2 — Python Dependencies
+# Install: pip install -r requirements.txt
+
+# Core scientific stack
+numpy>=1.24.0
+scipy>=1.10.0         # ks_2samp, wasserstein_distance — REQUIRED
+pandas>=1.5.0
+
+# Drift detection and ML
+scikit-learn>=1.2.0   # for optional MMD kernel (future)
+torch>=2.0.0          # needed by evaluator_v2.py (token logit extraction)
+transformers>=4.38.0  # HuggingFace model loading
+peft>=0.9.0           # QLoRA adapter loading (LoRA)
+bitsandbytes>=0.42.0  # 4-bit NF4 quantisation
+
+# Data loading
+datasets>=2.14.0      # HuggingFace datasets
+jsonlines>=3.1.0
+
+# Visualisation (optional — for plotting sensitivity tables)
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Multimodal (for E3 BLIP re-run)
+Pillow>=10.0.0
+pytesseract>=0.3.10
+
+# Utilities
+tqdm>=4.65.0
+python-dotenv>=1.0.0

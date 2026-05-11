@@ -1,0 +1,9 @@
+stream_name,detector_rule,window_size,step_size,step_fraction,bins,binning,reference_mode,calibrated_threshold_used,drift_detected,first_detection_window,detection_delay,false_alarm_count_before_drift,true_detection_after_drift,max_kl,min_ks_pvalue,max_js,max_wasserstein,n_windows,n_records,constant_confidence_warning
+class_prior_gradual,Ensemble_majority,50,25,0.5,10,equal_width,rolling,True,True,0,-26,2,True,2.028862,0.271914,0.064416,0.146201,78,2000,False
+class_prior_sudden,JS_only,50,25,0.5,10,equal_width,rolling,True,True,0,-38,7,True,2.403231,0.271914,0.070637,0.15665,78,2000,False
+confidence_shift_gradual,Ensemble_majority,50,25,0.5,10,equal_width,rolling,True,True,0,-22,2,True,1.981957,0.271914,0.053665,0.118034,78,2000,False
+confidence_shift_sudden,Ensemble_majority,50,25,0.5,10,quantile,rolling,True,True,0,-38,3,True,6.850413,0.021708,0.196573,0.100675,78,2000,False
+iid_control,KL_only,50,50,1.0,10,equal_width,fixed_first,True,True,2,,0,False,3.644053,0.112385,0.118052,0.137407,39,2000,False
+language_gradual,JS_only,50,25,0.5,10,equal_width,rolling,True,True,0,-22,5,True,2.41144,0.178587,0.07579,0.155108,78,2000,False
+language_sudden,KL_only,50,25,0.5,20,quantile,rolling,True,True,0,-38,24,True,4.736006,0.005842,0.143153,0.155979,78,2000,False
+source_sudden,Ensemble_majority,50,25,0.5,20,equal_width,rolling,True,True,0,-38,21,True,4.774508,0.002835,0.196124,0.217755,78,2000,False
