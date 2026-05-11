@@ -1,7 +1,7 @@
 """
 DriftGuard-LLM v2 — Confidence-Histogram Concept Drift Detector
 ================================================================
-Addresses Knowledge-Based Systems reviewer comments:
+Key design features:
 
   - KL divergence computed over *unsafe_confidence* histograms (not label counts)
   - KS test uses scipy.stats.ks_2samp → returns both statistic AND p-value

@@ -1,7 +1,5 @@
 # DriftGuard-LLM v2 — Concept Drift Detection for Multilingual Content Moderation
 
-**Revision addressing Knowledge-Based Systems reviewer comments.**
-
 ---
 
 ## ⛔ Important Experimental Rules (Read First)
@@ -323,7 +321,7 @@ If you use this code, please cite:
 @article{saravanan2026driftguard,
   title={DriftGuard-LLM: Concept Drift Monitoring for QLoRA Fine-Tuned LLaMA-3.1 8B Harmful Content Moderation},
   author={Saravanan, ...},
-  journal={Knowledge-Based Systems},
+  note={Under review},
   year={2026}
 }
 ```
