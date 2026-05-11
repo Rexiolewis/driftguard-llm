@@ -77,7 +77,7 @@ The downloaded prediction files have **constant confidence values** due to the o
 
 ## Baseline Fairness Note
 
-> **This is mandatory disclosure for the paper.**
+> **Recommended disclosure for the manuscript.**
 
 The experiments include two types of baselines that must **not** be compared as if controlled:
 
